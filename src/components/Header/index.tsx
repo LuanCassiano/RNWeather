@@ -21,7 +21,7 @@ export default function Header({ onSearch }: IHeader): ReactElement {
                 <Styled.Row>
                     <Styled.FormInput
                         placeholder="Buscar cidades"
-                        placeholderTextColor="#fff9c4"
+                        placeholderTextColor="#ffffff"
                         onChangeText={(text): void => setSearchText(text)}
                         value={searchText}
                         returnKeyType="search"

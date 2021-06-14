@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
     height: 80px;
     padding: 20px;
-    background-color: #4554b4;
+    background-color: #151a25;
     justify-content: center;
     elevation: 5;
 `;
@@ -22,7 +22,8 @@ export const FormControl = styled.View`
 export const FormInput = styled.TextInput`
     flex: 1;
     padding-left: 15px;
-    color: #fff9c4;
+    color: #ffffff;
+    font-family: 'Nunito-Regular';
 `;
 
 export const FormAction = styled.TouchableOpacity`
