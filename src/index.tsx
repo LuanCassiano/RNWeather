@@ -10,12 +10,19 @@ import { store, persistor } from './store';
 import App from './App';
 
 export default function Root(): ReactElement {
+    // return (
+    //     <Provider store={store}>
+    //         <PersistGate loading={null} persistor={persistor}>
+    //             <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+    //             <App />
+    //         </PersistGate>
+    //     </Provider>
+    // );
+
     return (
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-                <App />
-            </PersistGate>
-        </Provider>
-    );
+        <>
+            <StatusBar barStyle="light-content" backgroundColor="#4554b4" />
+            <App />
+        </>
+    )
 }
