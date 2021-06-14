@@ -13,7 +13,7 @@ export default function Root(): ReactElement {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+                <StatusBar barStyle="light-content" backgroundColor="#151a25" />
                 <App />
             </PersistGate>
         </Provider>
