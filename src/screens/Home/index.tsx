@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import * as Styled from './styles';
 
@@ -18,9 +19,12 @@ import rainDayAnimation from '../../assets/animations/rain.json';
 import cloudDayAnimation from '../../assets/animations/clouds.json';
 
 import { IWeatherAnimationContent } from './interfaces/IWeatherAnimationContent';
+import { ICityWeather } from '../../interfaces/ICityWeather';
 
 export default function Home(): ReactElement {
     const dispatch = useDispatch();
+
+    const navigation = useNavigation();
 
     const { data } = useSelector((state: RootState) => state.city);
 
@@ -29,11 +33,17 @@ export default function Home(): ReactElement {
     const getCities = async (textSearch: string): Promise<void> => {
         const response = await getLocationByAddress(textSearch);
         setAddresses(response.data);
-    }
+    };
 
     const onAddCity = (city: string): void => {
-        dispatch(CityActions.addCityRequest(city))
-    }
+        dispatch(CityActions.addCityRequest(city));
+    };
+
+    const onNavigate = (item: ICityWeather): void => {
+        navigation.navigate('cityDetails', {
+            city: item
+        })
+    };
 
     const getWeatherCondition = (weather: string): ReactElement => {
         const _renderAnimationWeather: IWeatherAnimationContent = {
@@ -43,7 +53,7 @@ export default function Home(): ReactElement {
         };
 
         return _renderAnimationWeather[weather];
-    }
+    };
 
     const _renderSearchList = (): ReactElement => {
         if (addresses) {
@@ -64,10 +74,10 @@ export default function Home(): ReactElement {
                     />
                 </Styled.SearchListContainer>
             )
-        }
+        };
 
         return (<></>)
-    }
+    };
 
     const _renderNoContent = (): ReactElement => {
         return (
@@ -76,7 +86,7 @@ export default function Home(): ReactElement {
                 <Styled.MessageNoContent fontStyle="normal" size="16px">Tente adicionar uma cidade usando o campo de busca</Styled.MessageNoContent>
             </Styled.CenterContent>
         )
-    }
+    };
 
     return (
         <Styled.Container>
@@ -99,9 +109,7 @@ export default function Home(): ReactElement {
                                 scrollEventThrottle={16}
                                 renderItem={({ item }): ReactElement => {
                                     return (
-                                        <Styled.Card>
-
-
+                                        <Styled.Card onPress={(): void => onNavigate(item)}>
                                             <Styled.Row>
                                                 <Styled.Col>
                                                     <Styled.CardTitle>{item.name}</Styled.CardTitle>

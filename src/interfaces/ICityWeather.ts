@@ -4,7 +4,7 @@ export interface ICityWeather {
         lat: number;
     },
 
-    weather?: [
+    weather: [
         {
             id: number;
             main: string;

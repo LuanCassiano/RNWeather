@@ -7,13 +7,21 @@ import IconClose from '../../assets/icons/delete.svg';
 
 import { IHeader } from './interfaces/IHeader';
 
-export default function Header({ onSearch }: IHeader): ReactElement {
+export default function Header({ onSearch, onBack, onLike }: IHeader): ReactElement {
     const [searchText, setSearchText] = useState('');
+
+    const search = (text: string): void => {
+        if (onSearch) {
+            onSearch(text);
+        }
+    }
 
     const clearSearch = (): void => {
         setSearchText('');
-        onSearch('');
+        search('');
     }
+
+
 
     return (
         <Styled.Container>
@@ -25,7 +33,7 @@ export default function Header({ onSearch }: IHeader): ReactElement {
                         onChangeText={(text): void => setSearchText(text)}
                         value={searchText}
                         returnKeyType="search"
-                        onEndEditing={(e): Promise<void> => onSearch(e.nativeEvent.text)}
+                        onEndEditing={(e): void => search(e.nativeEvent.text)}
                     />
 
                     {searchText === '' ? (
