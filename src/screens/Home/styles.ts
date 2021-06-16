@@ -1,13 +1,20 @@
 import styled from 'styled-components/native';
 
+import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_WHITE } from '../../global/colors';
+import { FONT_BLACK, FONT_BOLD, FONT_REGULAR, FONT_SEMIBOLD } from '../../global/fontStyle';
+
 interface IMessageProps {
     size: string;
     fontStyle: string;
 }
 
+interface ICardProps {
+    backgroundColor: string;
+}
+
 export const Container = styled.View`
     flex: 1;
-    background-color: #1c2331;
+    background-color: ${COLOR_WHITE};
 `;
 
 export const Content = styled.View`
@@ -18,7 +25,7 @@ export const SearchListContainer = styled.View`
     position: absolute;
     top: 70px;
     left: 20px;
-    background-color: #ffffff;
+    background-color: ${COLOR_WHITE};
     padding: 20px;
     elevation: 5;
     width: 89%;
@@ -30,14 +37,14 @@ export const SearchListItem = styled.TouchableOpacity``;
 
 export const SearchListItemTitle = styled.Text`
     font-size: 16px;
-    color: #1c2331;
-    font-family: 'Nunito-Black';
+    color: ${COLOR_PRIMARY};
+    font-family: ${FONT_BLACK};
 `;
 
 export const SearchListItemSubTitle = styled.Text`
     font-size: 12px;
-    color: #1c2331;
-    font-family: 'Nunito-Regular';
+    color: ${COLOR_PRIMARY};
+    font-family: ${FONT_REGULAR};
 `;
 
 export const SearchListDivider = styled.View`
@@ -50,28 +57,26 @@ export const CenterContent = styled.View`
 `;
 
 export const MessageNoContent = styled.Text<IMessageProps>`
-    font-family: 'Nunito-Bold';
+    font-family: ${FONT_BOLD};
     font-size: ${(props): string => props.size};
     font-weight: ${(props): string => props.fontStyle};
-    color: #fff9c4;
+    color: ${COLOR_PRIMARY};
     text-align: center;
     margin-top: 10px;
 `;
 
 export const SectionTitle = styled.Text`
     font-size: 22px;
-    font-family: 'Nunito-Black';
-    color: #fff9c4;
+    font-family: ${FONT_BLACK};
+    color: ${COLOR_PRIMARY};
 `;
 
-export const Card = styled.TouchableOpacity`
-    margin-right: 20px;
-    margin-top: 20px;
-    background-color: #2a2d6d;
-    width: 250px;
-    height: 150px;
+export const Card = styled.TouchableOpacity<ICardProps>`
+    margin: 20px 0px;
+    background-color: ${(props): string => props.backgroundColor};
+    width: 100%;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 20px;
     elevation: 5;
 `;
 
@@ -86,28 +91,38 @@ export const Col = styled.View`
 
 export const CardTitle = styled.Text`
     font-size: 22px;
-    font-family: 'Nunito-SemiBold';
-    color: #fff9c4;
+    font-family: ${FONT_SEMIBOLD};
+    color: ${COLOR_WHITE};
 `;
 
 export const CardSubtitle = styled.Text`
     font-size: 16px;
-    font-family: 'Nunito-Regular';
-    color: #fff9c4;
+    font-family: ${FONT_REGULAR};
+    color: ${COLOR_WHITE};
 `;
 
 export const CardFooter = styled.View`
-    margin-top: 10px;
+    margin-top: 20px;
 `;
 
 export const CardParagraph = styled.Text`
-    font-size: 24px;
-    font-family: 'Nunito-Black';
-    color: #ffffff;
+    font-size: 36px;
+    font-family: ${FONT_BOLD};
+    color: ${COLOR_SECONDARY};
 `;
 
 export const CardLabel = styled.Text`
     font-size: 12px;
-    font-family: 'Nunito-Bold';
-    color: #ffffff;
+    font-family: ${FONT_BOLD};
+    color: ${COLOR_WHITE};
+`;
+
+export const FlexEndContent = styled.View`
+    flex-direction: row;
+    justify-content: flex-end;
+`;
+
+export const Icon = styled.Image`
+    width: 30px;
+    height: 30px;
 `;

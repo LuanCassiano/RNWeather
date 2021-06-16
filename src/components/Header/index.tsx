@@ -1,16 +1,18 @@
 import React, { ReactElement, useState } from 'react';
+import { TouchableOpacity, Image } from 'react-native';
 
 import * as Styled from './styles';
 
 import IconSearch from '../../assets/icons/search.svg';
 import IconClose from '../../assets/icons/delete.svg';
+import IconBack from '../../assets/icons/left-arrow.png';
 
 import { IHeader } from './interfaces/IHeader';
 
-export default function Header({ onSearch, onBack, onLike }: IHeader): ReactElement {
+export default function Header({ onSearch, onBack }: IHeader): ReactElement {
     const [searchText, setSearchText] = useState('');
 
-    const search = (text: string): void => {
+    const handleSearch = (text: string): void => {
         if (onSearch) {
             onSearch(text);
         }
@@ -18,35 +20,59 @@ export default function Header({ onSearch, onBack, onLike }: IHeader): ReactElem
 
     const clearSearch = (): void => {
         setSearchText('');
-        search('');
+        handleSearch('');
     }
 
+    const back = (): ReactElement => {
+        if (onBack) {
+            return (
+                <TouchableOpacity onPress={onBack}>
+                    <Image source={IconBack} style={{ width: 20, height: 20 }} />
+                </TouchableOpacity>
+            )
+        }
 
+        return (<></>)
+    }
+
+    const search = (): ReactElement => {
+        if (onSearch) {
+            return (
+                <Styled.FormControl>
+                    <Styled.Row>
+                        <Styled.FormInput
+                            placeholder="Buscar cidades"
+                            placeholderTextColor="#ffffff"
+                            onChangeText={(text): void => setSearchText(text)}
+                            value={searchText}
+                            returnKeyType="search"
+                            onEndEditing={(e): void => handleSearch(e.nativeEvent.text)}
+                        />
+
+                        {searchText === '' ? (
+                            <Styled.FormAction>
+                                <IconSearch width={15} height={15} />
+                            </Styled.FormAction>
+                        ) : (
+                            <Styled.FormAction onPress={clearSearch}>
+                                <IconClose width={15} height={15} />
+                            </Styled.FormAction>
+                        )}
+                    </Styled.Row>
+                </Styled.FormControl>
+            )
+        }
+
+        return (<></>)
+    }
 
     return (
         <Styled.Container>
-            <Styled.FormControl>
-                <Styled.Row>
-                    <Styled.FormInput
-                        placeholder="Buscar cidades"
-                        placeholderTextColor="#ffffff"
-                        onChangeText={(text): void => setSearchText(text)}
-                        value={searchText}
-                        returnKeyType="search"
-                        onEndEditing={(e): void => search(e.nativeEvent.text)}
-                    />
+            <Styled.Row>
+                {back()}
+                {search()}
+            </Styled.Row>
 
-                    {searchText === '' ? (
-                        <Styled.FormAction>
-                            <IconSearch width={15} height={15} />
-                        </Styled.FormAction>
-                    ) : (
-                        <Styled.FormAction onPress={clearSearch}>
-                            <IconClose width={15} height={15} />
-                        </Styled.FormAction>
-                    )}
-                </Styled.Row>
-            </Styled.FormControl>
         </Styled.Container>
     )
 }

@@ -18,6 +18,10 @@ import sunnyDayAnimation from '../../assets/animations/sunny.json';
 import rainDayAnimation from '../../assets/animations/rain.json';
 import cloudDayAnimation from '../../assets/animations/clouds.json';
 
+import IconLike from '../../assets/icons/heart.png';
+import IconLikeSelected from '../../assets/icons/like-selected.png';
+import IconRemove from '../../assets/icons/remove.png';
+
 import { IWeatherAnimationContent } from './interfaces/IWeatherAnimationContent';
 import { ICityWeather } from '../../interfaces/ICityWeather';
 
@@ -44,6 +48,14 @@ export default function Home(): ReactElement {
             city: item
         })
     };
+
+    const onRemove = (cityId: number): void => {
+        dispatch(CityActions.removeCityRequest(cityId));
+    }
+
+    const onFavorite = (cityId: number): void => {
+        dispatch(CityActions.addFavoriteCity(cityId));
+    }
 
     const getWeatherCondition = (weather: string): ReactElement => {
         const _renderAnimationWeather: IWeatherAnimationContent = {
@@ -104,28 +116,37 @@ export default function Home(): ReactElement {
                             <FlatList
                                 keyExtractor={item => String(item.id)}
                                 data={data}
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                scrollEventThrottle={16}
+                                showsVerticalScrollIndicator={false}
+                                contentContainerStyle={{ paddingBottom: 100 }}
                                 renderItem={({ item }): ReactElement => {
                                     return (
-                                        <Styled.Card onPress={(): void => onNavigate(item)}>
+                                        <Styled.Card onPress={(): void => onNavigate(item)} backgroundColor={item.favorite ? '#384662' : '#1c2331'}>
                                             <Styled.Row>
                                                 <Styled.Col>
+                                                    <Styled.CardParagraph>{item.main.temp.toFixed(0)}°</Styled.CardParagraph>
                                                     <Styled.CardTitle>{item.name}</Styled.CardTitle>
                                                     <Styled.CardSubtitle>{item.sys.country}</Styled.CardSubtitle>
                                                 </Styled.Col>
+
 
                                                 {getWeatherCondition(item.weather[0].main)}
 
                                             </Styled.Row>
 
                                             <Styled.CardFooter>
-                                                <Styled.CardParagraph>{item.main.temp.toFixed(0)}°</Styled.CardParagraph>
-                                                <Styled.Row>
-                                                    <Styled.CardLabel>Min {item.main.temp_min.toFixed(0)}°</Styled.CardLabel>
-                                                    <Styled.CardLabel>Max {item.main.temp_max.toFixed(0)}°</Styled.CardLabel>
-                                                </Styled.Row>
+                                                <Styled.FlexEndContent>
+                                                    <TouchableOpacity style={{ marginRight: 20 }} onPress={(): void => onFavorite(item.id)}>
+                                                        {item.favorite ? (
+                                                            <Styled.Icon source={IconLikeSelected} />
+                                                        ) : (
+                                                            <Styled.Icon source={IconLike} />
+                                                        )}
+                                                    </TouchableOpacity>
+
+                                                    <TouchableOpacity onPress={(): void => onRemove(item.id)}>
+                                                        <Styled.Icon source={IconRemove} />
+                                                    </TouchableOpacity>
+                                                </Styled.FlexEndContent>
                                             </Styled.CardFooter>
                                         </Styled.Card>
                                     )
@@ -138,14 +159,8 @@ export default function Home(): ReactElement {
                         </>
                     )}
                 </Styled.Content>
-            )}
-
-
-
-            {/* <Styled.Content>
-                <Styled.SectionTitle>Minhas cidades favoritas</Styled.SectionTitle>
-            </Styled.Content> */}
-
-        </Styled.Container>
+            )
+            }
+        </Styled.Container >
     )
 }

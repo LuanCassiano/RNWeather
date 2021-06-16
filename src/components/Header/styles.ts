@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 
+import { FONT_REGULAR } from '../../global/fontStyle';
+
 export const Container = styled.View`
     height: 80px;
     padding: 20px;
@@ -23,7 +25,7 @@ export const FormInput = styled.TextInput`
     flex: 1;
     padding-left: 15px;
     color: #ffffff;
-    font-family: 'Nunito-Regular';
+    font-family: ${FONT_REGULAR};
 `;
 
 export const FormAction = styled.TouchableOpacity`

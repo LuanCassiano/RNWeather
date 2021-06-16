@@ -1,5 +1,5 @@
 import React, { ReactElement, useState, useEffect } from 'react';
-import { Text, FlatList, ScrollView } from 'react-native';
+import { FlatList, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
@@ -20,6 +20,7 @@ import { dayOfWeek } from '../../helpers/getDayOfWeek';
 import { weatherForecast } from '../../helpers/fiveDayWeatherForecast';
 
 import { RootState } from '../../store/module/rootReducer';
+import { IFiveDayWeather } from './interfaces/IFiveDayWeather';
 
 export default function CityDetails(): ReactElement {
     const dispatch = useDispatch();
@@ -30,7 +31,7 @@ export default function CityDetails(): ReactElement {
     const { city } = useSelector((state: RootState) => state.city);
 
     const [cityDetails] = useState(route.params?.city);
-    const [fiveDayWeather, setFiveDayWeather] = useState([]);
+    const [fiveDayWeather, setFiveDayWeather] = useState<IFiveDayWeather[]>([]);
     const [date, setDate] = useState({
         day: 0,
         weekDay: '',
@@ -93,9 +94,9 @@ export default function CityDetails(): ReactElement {
 
     return (
         <Styled.Container>
-            <Header onBack={(): void => { }} onLike={(): void => { }} />
+            <Header onBack={goBack} />
 
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <Styled.Content>
                     <Styled.Card>
                         <Styled.Row>

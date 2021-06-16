@@ -46,6 +46,23 @@ export default function City(state = INITIAL_STATE, action: any) {
                 break;
             }
 
+            case CityTypes.REMOVE_CITY_REQUEST: {
+                draft.data = draft.data.filter((x) => x.id !== action.payload);
+                break;
+            }
+
+            case CityTypes.ADD_FAVORITE_CITY: {
+                let newArr = draft.data;
+
+                newArr.forEach(item => {
+                    if (item.id === action.payload) {
+                        item.favorite = !item.favorite;
+                    }
+                })
+
+                draft.data = [...newArr];
+            }
+
             default:
                 break;
         }

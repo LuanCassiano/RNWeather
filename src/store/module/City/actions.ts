@@ -30,3 +30,17 @@ export function getCitySuccess(city: ICityWeatherList): IAction<ICityWeatherList
         payload: city,
     }
 }
+
+export function removeCityRequest(idCity: number): IAction<number> {
+    return {
+        type: CityTypes.REMOVE_CITY_REQUEST,
+        payload: idCity,
+    }
+}
+
+export function addFavoriteCity(idCity: number): IAction<number> {
+    return {
+        type: CityTypes.ADD_FAVORITE_CITY,
+        payload: idCity,
+    }
+}

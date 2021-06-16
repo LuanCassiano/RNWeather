@@ -19,10 +19,12 @@ export function* addCity({ payload }: AnyAction): Generator {
             }
         })) as IApiResponse<ICityWeather>;
 
-        yield put(addCitySuccess(response.data))
+        const newObj = Object.assign(response.data, { favorite: false })
+
+        yield put(addCitySuccess(newObj))
 
     } catch (error) {
-        console.tron.log('error', error.response)
+        console.log('error', error.response)
     }
 }
 
@@ -38,7 +40,7 @@ export function* getCityById({ payload }: AnyAction): Generator {
 
         yield put(getCitySuccess(response.data));
     } catch (error) {
-        console.tron.log('error', error.response)
+        console.log('error', error.response)
     }
 }
 
