@@ -4,7 +4,7 @@ export interface ICityWeather {
         lat: number;
     },
 
-    weather?: [
+    weather: [
         {
             id: number;
             main: string;
@@ -35,4 +35,5 @@ export interface ICityWeather {
     id: number;
     name: string;
     cod: number;
+    favorite: boolean;
 }

@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import * as Styled from './styles';
 
@@ -17,10 +18,17 @@ import sunnyDayAnimation from '../../assets/animations/sunny.json';
 import rainDayAnimation from '../../assets/animations/rain.json';
 import cloudDayAnimation from '../../assets/animations/clouds.json';
 
+import IconLike from '../../assets/icons/heart.png';
+import IconLikeSelected from '../../assets/icons/like-selected.png';
+import IconRemove from '../../assets/icons/remove.png';
+
 import { IWeatherAnimationContent } from './interfaces/IWeatherAnimationContent';
+import { ICityWeather } from '../../interfaces/ICityWeather';
 
 export default function Home(): ReactElement {
     const dispatch = useDispatch();
+
+    const navigation = useNavigation();
 
     const { data } = useSelector((state: RootState) => state.city);
 
@@ -29,10 +37,24 @@ export default function Home(): ReactElement {
     const getCities = async (textSearch: string): Promise<void> => {
         const response = await getLocationByAddress(textSearch);
         setAddresses(response.data);
-    }
+    };
 
     const onAddCity = (city: string): void => {
-        dispatch(CityActions.addCityRequest(city))
+        dispatch(CityActions.addCityRequest(city));
+    };
+
+    const onNavigate = (item: ICityWeather): void => {
+        navigation.navigate('cityDetails', {
+            city: item
+        })
+    };
+
+    const onRemove = (cityId: number): void => {
+        dispatch(CityActions.removeCityRequest(cityId));
+    }
+
+    const onFavorite = (cityId: number): void => {
+        dispatch(CityActions.addFavoriteCity(cityId));
     }
 
     const getWeatherCondition = (weather: string): ReactElement => {
@@ -43,7 +65,7 @@ export default function Home(): ReactElement {
         };
 
         return _renderAnimationWeather[weather];
-    }
+    };
 
     const _renderSearchList = (): ReactElement => {
         if (addresses) {
@@ -64,10 +86,10 @@ export default function Home(): ReactElement {
                     />
                 </Styled.SearchListContainer>
             )
-        }
+        };
 
         return (<></>)
-    }
+    };
 
     const _renderNoContent = (): ReactElement => {
         return (
@@ -76,7 +98,7 @@ export default function Home(): ReactElement {
                 <Styled.MessageNoContent fontStyle="normal" size="16px">Tente adicionar uma cidade usando o campo de busca</Styled.MessageNoContent>
             </Styled.CenterContent>
         )
-    }
+    };
 
     return (
         <Styled.Container>
@@ -94,30 +116,37 @@ export default function Home(): ReactElement {
                             <FlatList
                                 keyExtractor={item => String(item.id)}
                                 data={data}
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                scrollEventThrottle={16}
+                                showsVerticalScrollIndicator={false}
+                                contentContainerStyle={{ paddingBottom: 100 }}
                                 renderItem={({ item }): ReactElement => {
                                     return (
-                                        <Styled.Card>
-
-
+                                        <Styled.Card onPress={(): void => onNavigate(item)} backgroundColor={item.favorite ? '#384662' : '#1c2331'}>
                                             <Styled.Row>
                                                 <Styled.Col>
+                                                    <Styled.CardParagraph>{item.main.temp.toFixed(0)}°</Styled.CardParagraph>
                                                     <Styled.CardTitle>{item.name}</Styled.CardTitle>
                                                     <Styled.CardSubtitle>{item.sys.country}</Styled.CardSubtitle>
                                                 </Styled.Col>
+
 
                                                 {getWeatherCondition(item.weather[0].main)}
 
                                             </Styled.Row>
 
                                             <Styled.CardFooter>
-                                                <Styled.CardParagraph>{item.main.temp.toFixed(0)}°</Styled.CardParagraph>
-                                                <Styled.Row>
-                                                    <Styled.CardLabel>Min {item.main.temp_min.toFixed(0)}°</Styled.CardLabel>
-                                                    <Styled.CardLabel>Max {item.main.temp_max.toFixed(0)}°</Styled.CardLabel>
-                                                </Styled.Row>
+                                                <Styled.FlexEndContent>
+                                                    <TouchableOpacity style={{ marginRight: 20 }} onPress={(): void => onFavorite(item.id)}>
+                                                        {item.favorite ? (
+                                                            <Styled.Icon source={IconLikeSelected} />
+                                                        ) : (
+                                                            <Styled.Icon source={IconLike} />
+                                                        )}
+                                                    </TouchableOpacity>
+
+                                                    <TouchableOpacity onPress={(): void => onRemove(item.id)}>
+                                                        <Styled.Icon source={IconRemove} />
+                                                    </TouchableOpacity>
+                                                </Styled.FlexEndContent>
                                             </Styled.CardFooter>
                                         </Styled.Card>
                                     )
@@ -130,14 +159,8 @@ export default function Home(): ReactElement {
                         </>
                     )}
                 </Styled.Content>
-            )}
-
-
-
-            {/* <Styled.Content>
-                <Styled.SectionTitle>Minhas cidades favoritas</Styled.SectionTitle>
-            </Styled.Content> */}
-
-        </Styled.Container>
+            )
+            }
+        </Styled.Container >
     )
 }
